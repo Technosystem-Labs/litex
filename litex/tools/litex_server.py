@@ -229,8 +229,9 @@ def main():
         from litex.tools.litex_term import JTAGUART
         from litex.tools.remote.comm_uart import CommUART
         jtag_uart = JTAGUART(config=args.jtag_config, chain=int(args.jtag_chain))
-        jtag_uart.open()
+        jtag_uart_thread = threading.Thread(jtag_uart.open)
         print("[CommUART] port: JTAG / ", end="")
+        jtag_uart_thread.start()
         comm = CommUART(os.ttyname(jtag_uart.name), debug=args.debug, addr_width=int(args.addr_width))
 
     # UDP mode
