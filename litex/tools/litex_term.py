@@ -154,8 +154,8 @@ class JTAGUART:
                 self.tcp.connect(("localhost", self.srv_port))
                 break
             except ConnectionRefusedError as e:
-                i += 1
-                if i > 100:
+                _i += 1
+                if _i > 100:
                     raise e
                 time.sleep(0.1)
         self.pty2tcp_thread.start()
