@@ -134,9 +134,10 @@ class CrossoverUART:
 from litex.build.openocd import OpenOCD
 
 class JTAGUART:
-    def __init__(self, config="openocd_xc7_ft2232.cfg", port=20000, chain=1):
+    def __init__(self, config="openocd_xc7_ft2232.cfg", jtag_port=20000, chain=1, srv_port=1234):
         self.config = config
-        self.port   = port
+        self.jtag_port = jtag_port
+        self.srv_port  = srv_port
         self.chain  = chain
 
     def open(self):
@@ -149,7 +150,7 @@ class JTAGUART:
         self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         for _ in range(0, 50):
             try:
-                self.tcp.connect(("localhost", self.port))
+                self.tcp.connect(("localhost", self.srv_port))
                 break
             except ConnectionRefusedError:
                 time.sleep(0.1)
@@ -164,7 +165,7 @@ class JTAGUART:
 
     def jtag2tcp(self):
         prog = OpenOCD(self.config)
-        prog.stream(self.port, self.chain)
+        prog.stream(self.jtag_port, self.chain)
 
     def pty2tcp(self):
         while self.alive:

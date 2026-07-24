@@ -228,7 +228,12 @@ def main():
     elif args.jtag:
         from litex.tools.litex_term import JTAGUART
         from litex.tools.remote.comm_uart import CommUART
-        jtag_uart = JTAGUART(config=args.jtag_config, chain=int(args.jtag_chain))
+        jtag_uart = JTAGUART(
+            config=args.jtag_config,
+            jtag_port=20000,
+            srv_port=int(args.bind_port),
+            chain=int(args.jtag_chain)
+        )
         jtag_uart_thread = threading.Thread(jtag_uart.open)
         print("[CommUART] port: JTAG / ", end="")
         jtag_uart_thread.start()
