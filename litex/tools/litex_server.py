@@ -234,7 +234,7 @@ def main():
             srv_port=int(args.bind_port),
             chain=int(args.jtag_chain)
         )
-        jtag_uart_thread = threading.Thread(jtag_uart.open)
+        jtag_uart_thread = threading.Thread(target=jtag_uart.open)
         print("[CommUART] port: JTAG / ", end="")
         jtag_uart_thread.start()
         comm = CommUART(os.ttyname(jtag_uart.name), debug=args.debug, addr_width=int(args.addr_width))
