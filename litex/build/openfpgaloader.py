@@ -12,7 +12,7 @@ from litex.build.generic_programmer import GenericProgrammer
 class OpenFPGALoader(GenericProgrammer):
     needs_bitreverse = False
 
-    def __init__(self, board="", cable="", freq=0, fpga_part="", index_chain=None, ftdi_serial=None):
+    def __init__(self, board="", cable="", freq=0, fpga_part="", index_chain=None, ftdi_serial=None, device=None):
         # openFPGALoader base command.
         self.cmd = ["openFPGALoader"]
 
@@ -38,6 +38,10 @@ class OpenFPGALoader(GenericProgrammer):
 
         if ftdi_serial is not None:
             self.cmd += ["--ftdi-serial", str(ftdi_serial)]
+
+        # Specify serial device to use (/dev/ttyUSBx).
+        if device:
+            self.cmd += ["--device", device]
 
     def load_bitstream(self, bitstream_file):
         # Load base command.
