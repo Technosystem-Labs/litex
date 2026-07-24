@@ -148,11 +148,15 @@ class JTAGUART:
         self.pty2tcp_thread  = threading.Thread(target=self.pty2tcp, daemon=True)
         self.tcp2pty_thread  = threading.Thread(target=self.tcp2pty, daemon=True)
         self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        for _ in range(0, 50):
+        _i = 0
+        while True:
             try:
                 self.tcp.connect(("localhost", self.srv_port))
                 break
-            except ConnectionRefusedError:
+            except ConnectionRefusedError as e:
+                i += 1
+                if i > 100:
+                    raise e
                 time.sleep(0.1)
         self.pty2tcp_thread.start()
         self.tcp2pty_thread.start()
